@@ -74,6 +74,13 @@ public final class PBXBuildFile: PBXObject {
         settings = try container.decodeIfPresent([String: Any].self, forKey: .settings)
         try super.init(from: decoder)
     }
+
+    public override func isEqual(to object: Any?) -> Bool {
+        guard let rhs = object as? PBXBuildFile else { return false }
+        if fileReference != rhs.fileReference { return false }
+        if !NSDictionary(dictionary: settings ?? [:]).isEqual(to: rhs.settings ?? [:]) { return false }
+        return super.isEqual(to: rhs)
+    }
 }
 
 // MARK: - Internal Helpers
